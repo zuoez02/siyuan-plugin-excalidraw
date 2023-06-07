@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="javascript">window.EXCALIDRAW_ASSET_PATH = "/plugins/siyuan-plugin-excalidraw/excalidraw/";</script>
+    <script src="/plugins/siyuan-plugin-excalidraw/react.development.js"></script>
+    <script src="/plugins/siyuan-plugin-excalidraw/react-dom.development.js"></script>
+    <script src="/plugins/siyuan-plugin-excalidraw/excalidraw/excalidraw.development.js"></script>
+    <link href="/plugins/siyuan-plugin-excalidraw/style.css" rel="stylesheet">
+    <style>
+        body,
+        .excalidraw-wrapper,
+        .excalidraw-component {
+            height: 100vh;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="excalidraw-wrapper"></div>
+    <script>
+        let initialized = false;
+        window.parent.postMessage({
+            type: 'excalidraw-loaded',
+        });
+        const name = window.frameElement.getAttribute('data-name');
+        let initData;
+        window.addEventListener('message', (p) => {
+            initData = p.data.data;
+            init();
+        });
+        const App = () => {
+
+            const [isFullScreen, setIsFullScreen] = React.useState(false);
+            const excalidrawRef = React.useRef(null);
+
+            function toggleFullscreen() {
+                const el = document.querySelector('.excalidraw-wrapper');
+                if (!el) {
+                    return;
+                }
+                if (!isFullScreen) {
+                    el.requestFullscreen && el.requestFullscreen();
+                } else {
+                    document.exitFullscreen && document.exitFullscreen();
+                }
+
+                setIsFullScreen(!isFullScreen);
+            }
+
+            let timer;
+
+            function debounce(fn, timeout) {
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                timer = setTimeout(() => fn(), timeout);
+            }
+
+            function saveNow() {
+                const json = ExcalidrawLib.serializeAsJSON(excalidrawRef.current.getSceneElements(), excalidrawRef.current.getAppState(), excalidrawRef.current.getFiles(), 'local');
+                window.parent.postMessage({
+                    type: 'excalidraw',
+                    params: {
+                        name,
+                        json,
+                    },
+                }, '*');
+            }
+
+            function save() {
+                debounce(() => {
+                    saveNow()
+                }, 500)
+            }
+
+            const props = {
+                ref: excalidrawRef,
+                onChange: () => {
+                    save();
+                },
+                initialData: initData,
+                UIOptions: {
+                    canvasActions: {
+                        loadScene: true,
+                        theme: true,
+                    }
+                },
+                renderTopRightUI: () => {
+                    return React.createElement(
+                        React.Fragment,
+                        null,
+                        React.createElement(
+                            'div', {
+                                className: 'library-button',
+                                onClick: () => toggleFullscreen(),
+                            },
+                            '全屏'
+                        ),
+                        React.createElement(
+                            'div', {
+                                className: 'library-button',
+                                onClick: () => saveNow(),
+                            },
+                            '保存'
+                        ),
+                        React.createElement(
+                            'div', {
+                                className: 'library-button',
+                                onClick: () => window.location.reload(true),
+                            },
+                            '刷新'
+                        )
+                    )
+                }
+            };
+            const children = null;
+
+            return React.createElement(
+                React.Fragment,
+                null,
+                React.createElement(
+                    "div", {
+                        className: "excalidraw-component",
+                    },
+                    React.createElement(ExcalidrawLib.Excalidraw, props, children),
+                ),
+            );
+        };
+
+        function init() {
+            if (initialized) {
+                return;
+            }
+            const excalidrawWrapper = document.querySelector('.excalidraw-wrapper')
+            const root = ReactDOM.createRoot(excalidrawWrapper);
+            root.render(React.createElement(App));
+            initialized = true;
+        }
+    </script>
+</body>
+
+</html>
