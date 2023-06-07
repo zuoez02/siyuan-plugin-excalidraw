@@ -24,13 +24,6 @@ module.exports = class OpenMd extends Plugin {
         registerIcon('iconExcalidraw', '1024', icon);
         this.files = [];
         this.initDependency();
-        this.addTopBar({
-            icon: 'iconExcalidraw',
-            title: 'excalidraw',
-            callback: () => {
-                this.open();
-            }
-        })
         this.dock.createDock();
     }
 
