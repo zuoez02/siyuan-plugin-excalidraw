@@ -137,8 +137,8 @@ module.exports = class OpenMd extends Plugin {
             type: `excalidraw-${name}`,
             init() {
                 this.element.innerHTML = `
-                <div class="protyle fn__flex-1">
-                    <iframe src="/plugins/siyuan-plugin-excalidraw/index.html" style="border: none" class="excalidraw excalidraw-wrapper fn__flex fn__flex-1" data-name="${name}" data-init="${d}"></iframe>
+                <div class="fn__flex fn__flex-1 fn__flex-column">
+                    <iframe src="/plugins/siyuan-plugin-excalidraw/index.html" style="border: none" class="excalidraw excalidraw-wrapper fn__flex fn__flex-1" data-name="${name}"></iframe>
                 </div>`;
                 window.addEventListener('message', eventListener, false);
                 contentWindow = this.element.querySelector('.excalidraw').contentWindow;
