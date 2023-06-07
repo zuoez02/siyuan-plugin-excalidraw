@@ -80,10 +80,12 @@
             }
 
             const props = {
+                key: 'excalidraw',
                 ref: excalidrawRef,
                 onChange: () => {
                     save();
                 },
+                langCode: 'zh-CN',
                 initialData: initData,
                 UIOptions: {
                     canvasActions: {
@@ -91,33 +93,6 @@
                         theme: true,
                     }
                 },
-                renderTopRightUI: () => {
-                    return React.createElement(
-                        React.Fragment,
-                        null,
-                        React.createElement(
-                            'div', {
-                                className: 'library-button',
-                                onClick: () => toggleFullscreen(),
-                            },
-                            '全屏'
-                        ),
-                        React.createElement(
-                            'div', {
-                                className: 'library-button',
-                                onClick: () => saveNow(),
-                            },
-                            '保存'
-                        ),
-                        React.createElement(
-                            'div', {
-                                className: 'library-button',
-                                onClick: () => window.location.reload(true),
-                            },
-                            '刷新'
-                        )
-                    )
-                }
             };
             const children = null;
 
@@ -128,7 +103,39 @@
                     "div", {
                         className: "excalidraw-component",
                     },
-                    React.createElement(ExcalidrawLib.Excalidraw, props, children),
+                    React.createElement(ExcalidrawLib.Excalidraw, props, [
+                        React.createElement(ExcalidrawLib.MainMenu, {
+                            key: 'mainmenu'
+                        }, [
+                            React.createElement(ExcalidrawLib.MainMenu.DefaultItems.ToggleTheme, {
+                                key: 'ToggleTheme',
+                            }),
+                            React.createElement(ExcalidrawLib.MainMenu.DefaultItems.ClearCanvas, {
+                                key: 'ClearCanvas'
+                            }),
+                            React.createElement(ExcalidrawLib.MainMenu.DefaultItems.Help, {
+                                key: 'help'
+                            }),
+                            React.createElement(ExcalidrawLib.MainMenu.Item, {
+                                key: 'refresh',
+                                icon: React.createElement('svg', null, React.createElement('use', {
+                                    'xlinkHref': '#iconHelp'
+                                })),
+                                onSelect: () => window.location.reload(true),
+                            }, '刷新'),
+                            React.createElement(ExcalidrawLib.MainMenu.Item, {
+                                key: 'fullscreen',
+                                icon: React.createElement('svg', null, React.createElement('use', {
+                                    'xlinkHref': '#iconHelp'
+                                })),
+                                onSelect: () => toggleFullscreen(),
+                            }, '全屏'),
+
+                            React.createElement(ExcalidrawLib.MainMenu.DefaultItems.ChangeCanvasBackground, {
+                                key: 'ChangeCanvasBackground'
+                            }),
+                        ])
+                    ]),
                 ),
             );
         };
