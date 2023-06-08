@@ -22,18 +22,25 @@
 </head>
 
 <body>
-    <div class="excalidraw-wrapper"></div>
+    <div class="excalidraw-wrapper">
+        <div class="button" onclick="window.location.reload()">Reload...</div>
+    </div>
     <script>
+        const name = window.frameElement.getAttribute('data-name');
+        const id = window.frameElement.getAttribute('data-id');
         let initialized = false;
         window.parent.postMessage({
             type: 'excalidraw-loaded',
+            params: {
+                name,
+                id,
+            },
         });
-        const name = window.frameElement.getAttribute('data-name');
         let initData;
-        window.addEventListener('message', (p) => {
+        const d = window.addEventListener('message', (p) => {
             initData = p.data.data;
             init();
-        });
+        }, false);
         const App = () => {
 
             const [isFullScreen, setIsFullScreen] = React.useState(false);
@@ -65,9 +72,10 @@
             function saveNow() {
                 const json = ExcalidrawLib.serializeAsJSON(excalidrawRef.current.getSceneElements(), excalidrawRef.current.getAppState(), excalidrawRef.current.getFiles(), 'local');
                 window.parent.postMessage({
-                    type: 'excalidraw',
+                    type: 'excalidraw-save',
                     params: {
                         name,
+                        id,
                         json,
                     },
                 }, '*');

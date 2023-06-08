@@ -18,6 +18,8 @@ module.exports = class OpenMd extends Plugin {
         super(options);
         this.dock = new Dock(this);
         this.tabs = [];
+        this.eventListener = null;
+        this.windows = {};
     }
 
     onload() {
@@ -120,38 +122,37 @@ module.exports = class OpenMd extends Plugin {
     }
 
     async open(name) {
-        const d = await this.loadData(`${name}.excalidraw`);
-        let contentWindow;
-        const eventListener = async(p) => {
-            const data = p.data;
-            if (data.type === 'excalidraw' && data.params.name === name) {
-                this.saveData(`${name}.excalidraw`, data.params.json);
-            } else if (data.type === 'excalidraw-loaded') {
-                const data = await this.loadData(`${name}.excalidraw`);
-                contentWindow.postMessage({
-                    data,
-                }, '*')
+        const plugin = this;
+        if (!this.eventListener) {
+            this.eventListener = async(p) => {
+                const data = p.data;
+                if (data.type === 'excalidraw-save') {
+                    this.saveData(`${data.params.name}.excalidraw`, data.params.json);
+                } else if (data.type === 'excalidraw-loaded') {
+                    const name = data.params.name;
+                    const id = data.params.id;
+                    const res = await this.loadData(`${name}.excalidraw`);
+                    this.windows[data.params.id].postMessage({
+                        data: res,
+                        id: id,
+                    }, '*');
+                }
             }
+            window.addEventListener('message', this.eventListener, false);
         }
         const tab = this.addTab({
             type: `excalidraw-${name}`,
             init() {
+                const id = (Math.random() * 1000).toFixed(0);
                 this.element.innerHTML = `
                 <div class="fn__flex fn__flex-1 fn__flex-column">
-                    <iframe src="/plugins/siyuan-plugin-excalidraw/index.html" style="border: none" class="excalidraw excalidraw-wrapper fn__flex fn__flex-1" data-name="${name}"></iframe>
+                    <iframe src="/plugins/siyuan-plugin-excalidraw/index.html" style="border: none" class="excalidraw excalidraw-wrapper fn__flex fn__flex-1" data-name="${name}" data-id="${id}"></iframe>
                 </div>`;
-                window.addEventListener('message', eventListener, false);
-                contentWindow = this.element.querySelector('.excalidraw').contentWindow;
-                contentWindow.addEventListener('load', () => {
-                    contentWindow.postMessage({
-                        data: d,
-                    }, '*')
-                })
-
+                const contentWindow = this.element.querySelector('.excalidraw').contentWindow;
+                plugin.windows[id] = contentWindow;
             },
             destroy: () => {
                 this.tabs.splice(this.tabs.findIndex((v) => v.name === name), 1);
-                window.removeEventListener('message', eventListener);
             }
         });
         const t = openTab({

@@ -2,7 +2,7 @@
     "name": "siyuan-plugin-excalidraw",
     "author": "zuoez02",
     "url": "https://github.com/zuoez02/siyuan-plugin-excalidraw",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "displayName": {
         "default": "Excalidraw",
         "zh_CN": "Excalidraw"
