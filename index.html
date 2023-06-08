@@ -6,10 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script type="javascript">window.EXCALIDRAW_ASSET_PATH = "/plugins/siyuan-plugin-excalidraw/excalidraw/";</script>
-    <script src="/plugins/siyuan-plugin-excalidraw/react.development.js"></script>
-    <script src="/plugins/siyuan-plugin-excalidraw/react-dom.development.js"></script>
-    <script src="/plugins/siyuan-plugin-excalidraw/excalidraw/excalidraw.development.js"></script>
     <link href="/plugins/siyuan-plugin-excalidraw/style.css" rel="stylesheet">
     <style>
         body,
@@ -25,7 +21,11 @@
     <div class="excalidraw-wrapper">
         <div class="button" onclick="window.location.reload()">Reload...</div>
     </div>
+    <script src="/plugins/siyuan-plugin-excalidraw/react.development.js"></script>
+    <script src="/plugins/siyuan-plugin-excalidraw/react-dom.development.js"></script>
+    <script src="/plugins/siyuan-plugin-excalidraw/excalidraw/excalidraw.development.js"></script>
     <script>
+        window.EXCALIDRAW_ASSET_PATH = "/plugins/siyuan-plugin-excalidraw/excalidraw/";
         const name = window.frameElement.getAttribute('data-name');
         const id = window.frameElement.getAttribute('data-id');
         let initialized = false;
