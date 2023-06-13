@@ -25,7 +25,6 @@ module.exports = class OpenMd extends Plugin {
     onload() {
         registerIcon('iconExcalidraw', '1024', icon);
         this.files = [];
-        this.initDependency();
         this.dock.createDock();
     }
 
@@ -40,7 +39,10 @@ module.exports = class OpenMd extends Plugin {
         });
     }
 
-    updateFiles() {
+    updateFiles(files) {
+        if (files) {
+            this.files = files;
+        }
         this.saveData('files.json', JSON.stringify(this.files, null, 2));
     }
 
@@ -123,31 +125,11 @@ module.exports = class OpenMd extends Plugin {
 
     async open(name) {
         const plugin = this;
-        if (!this.eventListener) {
-            this.eventListener = async(p) => {
-                const data = p.data;
-                if (data.type === 'excalidraw-save') {
-                    this.saveData(`${data.params.name}.excalidraw`, data.params.json);
-                } else if (data.type === 'excalidraw-loaded') {
-                    const name = data.params.name;
-                    const id = data.params.id;
-                    const res = await this.loadData(`${name}.excalidraw`);
-                    this.windows[data.params.id].postMessage({
-                        data: res,
-                        id: id,
-                    }, '*');
-                }
-            }
-            window.addEventListener('message', this.eventListener, false);
-        }
         const tab = this.addTab({
             type: `excalidraw-${name}`,
             init() {
                 const id = (Math.random() * 1000).toFixed(0);
-                this.element.innerHTML = `
-                <div class="fn__flex fn__flex-1 fn__flex-column">
-                    <iframe src="/plugins/siyuan-plugin-excalidraw/index.html" style="border: none" class="excalidraw excalidraw-wrapper fn__flex fn__flex-1" data-name="${name}" data-id="${id}"></iframe>
-                </div>`;
+                this.element.innerHTML = `<div class="fn__flex fn__flex-1 fn__flex-column"><iframe src="/plugins/siyuan-plugin-excalidraw/index.html" style="border: none" class="excalidraw excalidraw-wrapper fn__flex fn__flex-1" data-name="${name}" data-id="${id}"></iframe></div>`;
                 const contentWindow = this.element.querySelector('.excalidraw').contentWindow;
                 plugin.windows[id] = contentWindow;
             },
@@ -197,49 +179,51 @@ class Dock {
                         type: 'ExcalidrawDock',
                         init() {
                             const render = () => {
-                                    this.element.innerHTML = `<div class="fn__flex-1 fn__flex-column">
-                            <style>
-                        .plugin-excalidraw-dock {
-                            padding: 0px;
-                        }
-                        .plugin-excalidraw-dock .excalidraw-draw {
-                            padding: 4px;
-                            margin: 2px 6px;
-                            font-size: 16px;
-                        }
-                        .plugin-excalidraw-dock .excalidraw-draw:hover {
-                            cursor: pointer;
-                            border-radius: 4px;
-                            background-color: var(--b3-list-background);
-                        }
-                        .plugin-excalidraw-dock .excalidraw-draw {
+                                    this.element.innerHTML = `
+<div class="fn__flex-1 fn__flex-column">
+    <style>
+        .plugin-excalidraw-dock {
+            padding: 0px;
+        }
+        .plugin-excalidraw-dock .excalidraw-draw {
+            padding: 4px;
+            margin: 2px 6px;
+            font-size: 16px;
+        }
+        .plugin-excalidraw-dock .excalidraw-draw:hover {
+            cursor: pointer;
+            border-radius: 4px;
+            background-color: var(--b3-list-background);
+        }
+        .plugin-excalidraw-dock .excalidraw-draw {
 
-                    }
-                    .plugin-excalidraw-dock .excalidraw-draw svg {
-                        width: 14px;
-                        height: 14px;
-                        margin-right: 6px;
-                    }
-                    </style>
-                    <div class="block__icons">
-                        <div class="block__logo">
-                            <svg><use xlink:href="#iconExcalidraw"></use></svg>
-                            Excalidraw
-                        </div>
-                        <span class="fn__flex-1 fn__space"></span>
-                        <span data-type="min" class="block__icon b3-tooltips b3-tooltips__sw" aria-label="最小化"><svg><use xlink:href="#iconMin"></use></svg></span>
-                        <span id="add-draw" class="block__icon b3-tooltips b3-tooltips__sw" aria-label="新建"><svg><use xlink:href="#iconAdd"></use></svg></span>
-                    </div>
-                    
-                    <div class="fn__flex-1 plugin-excalidraw-dock">
-                        ${this.data.files?.map((file) => {
+    }
+    .plugin-excalidraw-dock .excalidraw-draw svg {
+        width: 14px;
+        height: 14px;
+        margin-right: 6px;
+    }
+    </style>
+    <div class="block__icons">
+        <div class="block__logo">
+            <svg><use xlink:href="#iconExcalidraw"></use></svg>
+            Excalidraw
+        </div>
+        <span class="fn__flex-1 fn__space"></span>
+        <span data-type="min" class="block__icon b3-tooltips b3-tooltips__sw" aria-label="最小化"><svg><use xlink:href="#iconMin"></use></svg></span>
+        <span id="add-draw" class="block__icon b3-tooltips b3-tooltips__sw" aria-label="新建"><svg><use xlink:href="#iconAdd"></use></svg></span>
+        <span id="refresh" class="block__icon b3-tooltips b3-tooltips__sw" aria-label="刷新"><svg><use xlink:href="#iconRefresh"></use></svg></span>
+    </div>
+    
+    <div class="fn__flex-1 plugin-excalidraw-dock">
+        ${this.data.files?.map((file) => {
                         return `<div class="excalidraw-draw" data-name="${file}">
-                                <span>${file}</span>
-                                <span class="deletefile b3-tooltips b3-tooltips__w" aria-label="删除" data-name="${file}"><svg><use xlink:href="#iconTrashcan"></use></svg></span>
-                            </div>`
+                <span>${file}</span>
+                <span class="deletefile b3-tooltips b3-tooltips__w" aria-label="删除" data-name="${file}"><svg><use xlink:href="#iconTrashcan"></use></svg></span>
+            </div>`
                     }).join('') || '<div style="margin: 0 12px">无数据</div>'}
-                    </div>
-                </div>`;
+    </div>
+</div>`;
                     const files = this.element.querySelectorAll('.excalidraw-draw');
                     if (!files) {
                         return;
@@ -263,6 +247,19 @@ class Dock {
                     }
                     const add = this.element.querySelector('#add-draw');
                     add.addEventListener('click', () => dock.addDraw());
+                    const refresh = this.element.querySelector('#refresh');
+                    refresh.addEventListener('click', () => {
+                        fetch('/api/file/readDir', { method: 'POST', body: JSON.stringify({
+                            path: '/data/storage/petal/siyuan-plugin-excalidraw'
+                        })}).then((res) => res.json()).then((data) => {
+                            const files = data.data;
+                            this.data.files.splice(0, this.data.files.length);
+                            const excalidrawFiles = files.filter(v => v.name.endsWith('.excalidraw')).map(v => v.name.split('.')[0]);
+                            excalidrawFiles.forEach(f => this.data.files.push(f));
+                            plugin.updateFiles(excalidrawFiles);
+                            dock.refresh();
+                        })
+                    });
                 }
 
                 dock.el = this.element;
@@ -292,7 +289,7 @@ class Dock {
             </div>`,
             width: "920px",
         });
-        document.getElementById('saveDraw').addEventListener('click', () => {
+        const save = () => {
             const name = document.getElementById('draw-name').value;
             const result = name.trim();
             if (!result || ['/', '*', '$', '&', '^', '.', '\\'].some(v => result.indexOf('v') !== -1)) {
@@ -301,6 +298,14 @@ class Dock {
             }
             this.plugin.addDraw(name, { open: true });
             d.destroy();
+        }
+        document.getElementById('draw-name').addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                save();
+            }
+        })
+        document.getElementById('saveDraw').addEventListener('click', () => {
+            save();
         });
     }
 

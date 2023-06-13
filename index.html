@@ -19,7 +19,7 @@
 
 <body>
     <div class="excalidraw-wrapper">
-        <div class="button" onclick="window.location.reload()">Reload...</div>
+        <div class="button" onclick="window.location.reload()">Loading, Click to reload.</div>
     </div>
     <script src="/plugins/siyuan-plugin-excalidraw/react.development.js"></script>
     <script src="/plugins/siyuan-plugin-excalidraw/react-dom.development.js"></script>
@@ -27,20 +27,36 @@
     <script>
         window.EXCALIDRAW_ASSET_PATH = "/plugins/siyuan-plugin-excalidraw/excalidraw/";
         const name = window.frameElement.getAttribute('data-name');
-        const id = window.frameElement.getAttribute('data-id');
         let initialized = false;
-        window.parent.postMessage({
-            type: 'excalidraw-loaded',
-            params: {
-                name,
-                id,
-            },
-        });
+        const saveData = (name, json) => {
+            const formData = new FormData();
+            const pathString = `/data/storage/petal/siyuan-plugin-excalidraw/${name}.excalidraw`;
+            let file;
+            if (typeof json === "object") {
+                file = new File([new Blob([JSON.stringify(data)], {
+                    type: "application/json"
+                })], pathString.split("/").pop());
+            } else {
+                file = new File([new Blob([json])], pathString.split("/").pop());
+            }
+            formData.append('path', pathString);
+            formData.append('file', file);
+            formData.append('isDir', 'false')
+            fetch('/api/file/putFile', {
+                method: 'POST',
+                body: formData
+            });
+        }
+        const loadData = (name) => {
+            return fetch('/api/file/getFile', {
+                method: 'POST',
+                body: JSON.stringify({
+                    'path': `/data/storage/petal/siyuan-plugin-excalidraw/${name}.excalidraw`
+                })
+            }).then((res) => res.json()).catch(() => null);
+        }
         let initData;
-        const d = window.addEventListener('message', (p) => {
-            initData = p.data.data;
-            init();
-        }, false);
+
         const App = () => {
 
             const [isFullScreen, setIsFullScreen] = React.useState(false);
@@ -71,14 +87,7 @@
 
             function saveNow() {
                 const json = ExcalidrawLib.serializeAsJSON(excalidrawRef.current.getSceneElements(), excalidrawRef.current.getAppState(), excalidrawRef.current.getFiles(), 'local');
-                window.parent.postMessage({
-                    type: 'excalidraw-save',
-                    params: {
-                        name,
-                        id,
-                        json,
-                    },
-                }, '*');
+                saveData(name, json);
             }
 
             function save() {
@@ -148,15 +157,15 @@
             );
         };
 
-        function init() {
-            if (initialized) {
-                return;
-            }
+        async function init() {
+            initData = await loadData(name);
             const excalidrawWrapper = document.querySelector('.excalidraw-wrapper')
             const root = ReactDOM.createRoot(excalidrawWrapper);
             root.render(React.createElement(App));
             initialized = true;
         }
+
+        init();
     </script>
 </body>
 
