@@ -104,6 +104,22 @@
                 },
                 langCode: 'zh-CN',
                 initialData: initData,
+                onLinkOpen: (element, event) => {
+                    const link = element.link;
+                    const {
+                        nativeEvent
+                    } = event.detail;
+                    const isNewTab = nativeEvent.ctrlKey || nativeEvent.metaKey;
+                    const isNewWindow = nativeEvent.shiftKey;
+                    const isInternalLink =
+                        link.startsWith("siyuan:") || link.includes(window.location.origin);
+                    if (isInternalLink && !isNewTab && !isNewWindow) {
+                        window.open(link);
+                    } else {
+                        window.open(link, '_blank')
+                    }
+                    event.preventDefault();
+                },
                 UIOptions: {
                     canvasActions: {
                         loadScene: true,
