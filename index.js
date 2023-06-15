@@ -159,6 +159,8 @@ module.exports = class OpenMd extends Plugin {
     }
 }
 
+const InvalidPathChar = ['\\', '/', ':', '*', '?', '"', '<', '>', '|', '$', '&', '^', '.'];
+
 class Dock {
     constructor(plugin) {
         this.plugin = plugin;
@@ -298,7 +300,7 @@ class Dock {
         const save = () => {
             const name = document.getElementById('draw-name').value;
             const result = name.trim();
-            if (!result || ['/', '*', '$', '&', '^', '.', '\\'].some(v => result.indexOf(v) !== -1)) {
+            if (!result || InvalidPathChar.some(v => result.indexOf(v) !== -1)) {
                 showMessage(`Excalidraw: 名称 ${name} 不合法`);
                 return;
             }
@@ -338,7 +340,7 @@ class Dock {
         const rename = () => {
             const name = ele.querySelector('#draw-name').value;
             const result = name.trim();
-            if (!result || ['/', '*', '$', '&', '^', '.', '\\'].some(v => result.indexOf(v) !== -1)) {
+            if (!result || InvalidPathChar.some(v => result.indexOf(v) !== -1)) {
                 showMessage(`Excalidraw: 名称 ${name} 不合法`);
                 return;
             }
