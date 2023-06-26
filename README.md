@@ -12,6 +12,10 @@
 
 ## Changelog
 
+### v0.2.6
+
+- Support Chinese handwritting font
+
 ### v0.2.5
 
 - Render excalidraw directly, instead of iframe.
