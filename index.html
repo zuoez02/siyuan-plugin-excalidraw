@@ -21,11 +21,13 @@
     <div class="excalidraw-wrapper">
         <div class="button" onclick="window.location.reload()">Loading, Click to reload.</div>
     </div>
+    <script>
+        window.EXCALIDRAW_ASSET_PATH = "/plugins/siyuan-plugin-excalidraw/excalidraw/";
+    </script>
     <script src="/plugins/siyuan-plugin-excalidraw/react.development.js"></script>
     <script src="/plugins/siyuan-plugin-excalidraw/react-dom.development.js"></script>
     <script src="/plugins/siyuan-plugin-excalidraw/excalidraw/excalidraw.development.js"></script>
     <script>
-        window.EXCALIDRAW_ASSET_PATH = "/plugins/siyuan-plugin-excalidraw/excalidraw/";
         const name = window.frameElement.getAttribute('data-name');
         let initialized = false;
         const saveData = (name, json) => {
