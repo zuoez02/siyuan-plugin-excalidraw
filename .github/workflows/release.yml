@@ -16,7 +16,7 @@ jobs:
       - name: Package zip
         uses: vimtor/action-zip@v1
         with:
-          files: excalidraw/ icon.png index.html index.js LICENSE plugin.json preview.png react-dom.development.js react.development.js README.md style.css
+          files: excalidraw/ icon.png index.html index.js LICENSE plugin.json preview.png react-dom.development.js react.development.js README.md style.css icon.js tab.js dock.js
           recursive: false
           dest: package.zip
 
