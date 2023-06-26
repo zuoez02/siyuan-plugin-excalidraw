@@ -1,0 +1,22 @@
+{
+  "name": "siyuan-plugin-excalidraw",
+  "version": "0.2.5",
+  "description": "思源Excalidraw Plugin，作为白板使用",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zuoez02/siyuan-plugin-excalidraw.git"
+  },
+  "keywords": [],
+  "author": "zuoez02",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zuoez02/siyuan-plugin-excalidraw/issues"
+  },
+  "homepage": "https://github.com/zuoez02/siyuan-plugin-excalidraw#readme",
+  "devDependencies": {
+    "eslint": "^8.43.0"
+  },
+  "dependencies": {
+    "prettier": "^2.8.8"
+  }
+}

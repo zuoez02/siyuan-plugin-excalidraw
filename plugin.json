@@ -1,16 +1,16 @@
 {
-    "name": "siyuan-plugin-excalidraw",
-    "author": "zuoez02",
-    "url": "https://github.com/zuoez02/siyuan-plugin-excalidraw",
-    "version": "0.2.4",
-    "displayName": {
-        "default": "Excalidraw",
-        "zh_CN": "Excalidraw"
-    },
-    "description": {
-        "default": "基础款Excalidraw插件"
-    },
-    "readme": {
-        "default": "README.md"
-    }
+  "name": "siyuan-plugin-excalidraw",
+  "author": "zuoez02",
+  "url": "https://github.com/zuoez02/siyuan-plugin-excalidraw",
+  "version": "0.2.4",
+  "displayName": {
+    "default": "Excalidraw",
+    "zh_CN": "Excalidraw"
+  },
+  "description": {
+    "default": "基础款Excalidraw插件"
+  },
+  "readme": {
+    "default": "README.md"
+  }
 }
