@@ -6,16 +6,17 @@ module.exports = {
     node: true,
     es6: true,
   },
-  extends: "eslint:recommended",
+  extends: ["eslint:recommended", "plugin:react/recommended"],
   parserOptions: {
     ecmaVersion: "latest",
-    sourceType: 'module',
+    sourceType: "module",
   },
-  "globals": {
-    "React": true,
-    "ExcalidrawLib": true,
-    "siyuan": true,
-    "ReactDOM": true,
+  globals: {
+    React: true,
+    siyuan: true,
+    ReactDOM: true,
   },
-  rules: {},
+  rules: {
+    "react/jsx-no-undef": false,
+  },
 };

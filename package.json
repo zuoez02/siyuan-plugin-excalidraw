@@ -14,9 +14,19 @@
   },
   "homepage": "https://github.com/zuoez02/siyuan-plugin-excalidraw#readme",
   "devDependencies": {
-    "eslint": "^8.43.0"
+    "eslint": "^8.43.0",
+    "eslint-plugin-react": "^7.32.2",
+    "vite": "^4.3.9"
   },
   "dependencies": {
-    "prettier": "^2.8.8"
+    "@vitejs/plugin-react": "^4.0.1",
+    "@zuoez02/excalidraw": "^0.15.2",
+    "prettier": "^2.8.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch"
   }
 }
