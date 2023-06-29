@@ -85,7 +85,7 @@ export const loadAllFiles = () => {
   })
     .then((res) => res.json())
     .then((data) => {
-      return data.data
+      return (data?.data || [])
         .filter((v) => v.name.endsWith(".excalidraw"))
         .map((v) => v.name.split(".")[0]);
     });
