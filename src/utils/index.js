@@ -23,11 +23,11 @@ export function initExcalidrawTab(plugin) {
     async init() {
       this.element.innerHTML =
         '<div class="fn__flex fn__flex-1 fn__flex-column"><div style="border: none" class="excalidraw excalidraw-wrapper fn__flex fn__flex-1"></div></div>';
-      const initData = await loadData(plugin, this.data.name);
+      const initData = await loadData(this.data.name);
       const root = ReactDOM.createRoot(
         this.element.querySelector(".excalidraw-wrapper")
       );
-      root.render(React.createElement(Tab, { initData }));
+      root.render(React.createElement(Tab, { initData, name: this.data.name, el: this.element }));
       this.data.destroy = () => {
         root && root.unmount();
       };

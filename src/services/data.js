@@ -1,6 +1,9 @@
+export const getFilePath = (name) =>
+  `/data/storage/petal/siyuan-plugin-excalidraw/${name}.excalidraw`;
+
 export const saveData = (name, json) => {
   const formData = new FormData();
-  const pathString = `/data/storage/petal/siyuan-plugin-excalidraw/${name}.excalidraw`;
+  const pathString = getFilePath(name);
   let file;
   if (typeof json === "object") {
     file = new File(
@@ -22,8 +25,19 @@ export const saveData = (name, json) => {
     body: formData,
   });
 };
-export const loadData = (plugin, name) => {
-  return plugin.loadData(`${name}.excalidraw`);
+
+export const deleteData = (name) => {
+  return fetch("/api/file/removeFile", {
+    method: "POST",
+    body: JSON.stringify({ path: getFilePath(name) }),
+  });
+};
+
+export const loadData = (name) => {
+  return fetch("/api/file/getFile", {
+    method: "POST",
+    body: JSON.stringify({ path: getFilePath(name) }),
+  }).then((res) => res.json());
 };
 
 export const loadAllFiles = () => {
@@ -45,10 +59,13 @@ export function addDraw(name) {
   saveData(name, {});
 }
 
-export function editDraw(name, newVal) {
-    
+export function renameDraw(name, newVal) {
+  loadData(name).then((content) => {
+    saveData(newVal, content);
+    deleteData(name);
+  });
 }
 
-export function deleteDraw(plugin, name) {
-  plugin.removeData(`${name}.excalidraw`);
+export function deleteDraw(name) {
+  deleteData(name);
 }

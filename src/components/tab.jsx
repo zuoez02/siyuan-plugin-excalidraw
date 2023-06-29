@@ -1,6 +1,7 @@
-import { Fragment, useEffect, useState, useRef } from "react";
+import { Fragment, useState, useRef } from "react";
 import { Excalidraw, MainMenu, serializeAsJSON } from "@zuoez02/excalidraw";
 import { saveData } from "../services/data";
+import PropTypes from "prop-types";
 
 export const Tab = (props) => {
   const initData = props.initData;
@@ -8,12 +9,8 @@ export const Tab = (props) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const excalidrawRef = useRef(null);
 
-  useEffect(() => {
-    setRealName(props.name);
-  }, [props.name]);
-
   function toggleFullscreen() {
-    const el = el.querySelector(".excalidraw-wrapper");
+    const el = props.el.querySelector(".excalidraw-wrapper");
     if (!el) {
       return;
     }
@@ -112,4 +109,8 @@ export const Tab = (props) => {
       </div>
     </Fragment>
   );
+};
+
+Tab.propTypes = {
+  el: PropTypes.object.isRequired,
 };

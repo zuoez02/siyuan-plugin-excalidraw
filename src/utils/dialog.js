@@ -1,9 +1,11 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { Dialog } from 'siyuan';
 import { DialogContent } from '../components/dialog-content';
 
 export const addDraw = (callback) => {
   const d = new Dialog({
-    title: "Create Excalidraw",
+    title: "创建Excalidraw",
     content: `<div class="b3-dialog__content"><div id="create-excalidraw"></div></div>`,
     width: "520px",
   });
@@ -23,9 +25,9 @@ export const addDraw = (callback) => {
   root.render(React.createElement(DialogContent, props));
 };
 
-export const editDraw = (name, callback) => {
+export const renameDraw = (name, callback) => {
     const d = new Dialog({
-      title: "Rename Excalidraw",
+      title: "重命名Excalidraw",
       content: `<div class="b3-dialog__content"><div id="rename-excalidraw"></div></div>`,
       width: "520px",
     });

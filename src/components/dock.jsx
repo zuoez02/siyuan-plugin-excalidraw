@@ -1,23 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
-import { Dialog, showMessage, confirm } from "siyuan";
-import { loadAllFiles } from "../services/data";
-
-const InvalidPathChar = [
-  "\\",
-  "/",
-  ":",
-  "*",
-  "?",
-  '"',
-  "<",
-  ">",
-  "|",
-  "$",
-  "&",
-  "^",
-  ".",
-];
+import { confirm } from "siyuan";
+import { deleteDraw, loadAllFiles } from "../services/data";
+import { addDraw, renameDraw } from "../utils/dialog";
 
 export const Dock = (props) => {
   const plugin = props.plugin;
@@ -32,49 +17,14 @@ export const Dock = (props) => {
     navigator.clipboard.writeText(`[${filename}](${encodeURI(link)})`);
   };
 
-  const renameDraw = (fileName) => {
-    const d = new Dialog({
-      title: "Rename Excalidraw",
-      content: `<div class="b3-dialog__content">
-            <div id="rename-excalidraw">
-            <label class="fn__flex b3-label config__item">
-                <div class="fn__flex-1">名称
-                <div class="b3-label__text">名称为文件名，不可包含/,*,$等特殊字符</div>
-                </div>
-                <span class="fn__space"></span>
-                <input id="draw-name" class="b3-text-field fn__flex-center fn__size200" placeholder="新文件名" value="${fileName}">
-            </label>
-            <div class="button-group" style="float: right; margin: 20px 0 10px">
-            <button id="renameDraw" class="b3-button">更新</button>
-            </div>
-            </div>
-            </div>`,
-      width: "920px",
-    });
-    const ele = d.element;
-    const rename = () => {
-      const name = ele.querySelector("#draw-name").value;
-      const result = name.trim();
-      if (!result || InvalidPathChar.some((v) => result.indexOf(v) !== -1)) {
-        showMessage(`Excalidraw: 名称 ${name} 不合法`);
-        return;
-      }
-      plugin.renameDraw(fileName, name);
-      d.destroy();
-      files.splice(
-        files.findIndex((i) => i === fileName),
-        1,
-        name
-      );
+  const add = () => addDraw((name) => {
+    setFiles([...files, name]);
+  });
+
+  const rename = (fileName) => {
+    renameDraw(fileName, (name) => {
+      files.splice(files.findIndex((v) => v===fileName), 1, name);
       setFiles([...files]);
-    };
-    ele.querySelector("#draw-name").addEventListener("keyup", (e) => {
-      if (e.key === "Enter") {
-        rename();
-      }
-    });
-    ele.querySelector("#renameDraw").addEventListener("click", () => {
-      rename();
     });
   };
 
@@ -90,7 +40,7 @@ export const Dock = (props) => {
   const handleDelete = (file, event) => {
     event.stopPropagation();
     confirm("⚠警告: Excalidraw", `确认删除${file}吗?`, () => {
-      plugin.deleteDraw(file);
+      deleteDraw(file);
       files.splice(
         files.findIndex((i) => i === file),
         1
@@ -101,7 +51,7 @@ export const Dock = (props) => {
 
   const handleEdit = (file, event) => {
     event.stopPropagation();
-    renameDraw(file);
+    rename(file);
   };
 
   const handleRefresh = async () => {
@@ -132,7 +82,7 @@ export const Dock = (props) => {
           id="add-draw"
           className="block__icon b3-tooltips b3-tooltips__sw"
           aria-label="新建"
-          onClick={() => addDraw()}
+          onClick={() => add()}
         >
           <svg>
             <use xlinkHref="#iconAdd"></use>
@@ -188,7 +138,6 @@ export const Dock = (props) => {
           );
         }) || <div style={{ margin: "0 12px" }}>无数据</div>}
       </div>
-      ;
     </div>
   );
 };
