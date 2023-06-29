@@ -1,3 +1,8 @@
+## v0.3.0
+
+- React full refactor
+- Support library persistent.
+
 ## v0.2.6
 
 - Support Chinese handwritting font

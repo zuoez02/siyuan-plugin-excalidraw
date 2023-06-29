@@ -12,6 +12,10 @@
 
 ## Changelog
 
+### v0.3.0
+
+- React全面重构
+- 支持组件库的自动保存
 ### v0.2.6
 
 - Support Chinese handwritting font

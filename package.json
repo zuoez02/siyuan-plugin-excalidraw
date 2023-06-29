@@ -1,6 +1,6 @@
 {
   "name": "siyuan-plugin-excalidraw",
-  "version": "0.2.7",
+  "version": "0.3.0",
   "description": "思源Excalidraw Plugin，作为白板使用",
   "repository": {
     "type": "git",

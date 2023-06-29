@@ -1,6 +1,42 @@
 export const getFilePath = (name) =>
   `/data/storage/petal/siyuan-plugin-excalidraw/${name}.excalidraw`;
 
+export const libFilePath =
+  "/data/storage/petal/siyuan-plugin-excalidraw/library.excalidrawlib";
+
+export const saveLibraryFile = (json) => {
+  const formData = new FormData();
+  const pathString = libFilePath;
+  let file;
+  if (typeof json === "object") {
+    file = new File(
+      [
+        new Blob([JSON.stringify(json)], {
+          type: "application/json",
+        }),
+      ],
+      pathString.split("/").pop()
+    );
+  } else {
+    file = new File([new Blob([json])], pathString.split("/").pop());
+  }
+  formData.append("path", pathString);
+  formData.append("file", file);
+  formData.append("isDir", "false");
+  fetch("/api/file/putFile", {
+    method: "POST",
+    body: formData,
+  });
+};
+
+export const loadLibraryFile = async () => {
+  const res = await fetch("/api/file/getFile", {
+    method: "POST",
+    body: JSON.stringify({ path: libFilePath }),
+  });
+  return await res.json();
+};
+
 export const saveData = (name, json) => {
   const formData = new FormData();
   const pathString = getFilePath(name);
