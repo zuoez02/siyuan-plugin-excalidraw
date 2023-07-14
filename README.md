@@ -12,6 +12,10 @@
 
 ## Changelog
 
+### v0.3.2
+
+- 修复excalidraw加载错误的问题
+
 ### v0.3.1
 
 - 修复bug

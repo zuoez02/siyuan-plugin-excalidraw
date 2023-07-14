@@ -1,17 +1,14 @@
+import "./utils/env";
 import { Plugin, openTab } from "siyuan";
 import { icon } from "./assets/icon";
 import { registerIcon, initExcalidrawTab, initExcalidrawDock } from "./utils";
 
-export default class OpenMd extends Plugin {
-  constructor(options) {
-    super(options);
+
+export default class ExcalidrawPlugin extends Plugin {
+  onload() {
     this.tab = null;
     this.tabs = [];
-    window.EXCALIDRAW_ASSET_PATH =
-      "/plugins/siyuan-plugin-excalidraw/excalidraw/";
-  }
 
-  onload() {
     registerIcon("iconExcalidraw", "1024", icon);
     initExcalidrawDock(this);
     this.tab = initExcalidrawTab(this);
