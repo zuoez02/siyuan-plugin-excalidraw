@@ -1,13 +1,17 @@
 {
-  "addTopBarIcon": "Add a top bar icon by plugin",
-  "cancel": "Cancel",
-  "save": "Save",
-  "byeMenu": "Bye, Menu!",
-  "helloPlugin": "Hello, Plugin!",
-  "byePlugin": "Bye, Plugin!",
-  "showDialog": "Show dialog",
-  "removedData": "Data deleted",
-  "confirmRemove": "Are you sure you want to delete ${file}?",
-  "warningplugin": "Warning: Excalidraw",
-  "insertEmoji": "Insert Emoji"
+  "confirmRemove": "Are you sure you want to remove '${file}'?",
+  "edit": "Edit",
+  "copyLink": "Copy Link",
+  "delete": "Delete",
+  "noData": "No data",
+  "minimize": "Minimize",
+  "newBuild": "New Draw",
+  "refresh": "Refresh",
+  "invalidNameMessage": "Excalidraw: The name '${name}' is invalid",
+  "nameLabel": "Name",
+  "nameDescription": "The name is the file name and cannot contain special characters such as /,*,$",
+  "saveButton": "Save",
+  "fullscreen": "Full Screen",
+  "createDialogTitle": "Create Excalidraw",
+  "renameDialogTitle": "Rename Excalidraw"
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { confirm } from "siyuan";
 import { deleteDraw, loadAllFiles } from "../services/data";
@@ -8,24 +8,24 @@ export const Dock = (props) => {
   const plugin = props.plugin;
   const [files, setFiles] = useState(props.files);
 
-  const copyDraw = (filename) => {
-    const pluginName = "siyuan-plugin-excalidraw";
-    const tabType = "excalidraw";
-    const link = `siyuan://plugins/${pluginName}${tabType}?icon=iconExcalidraw&title=${filename}&data=${JSON.stringify(
-      { name: filename }
-    )}`;
-    navigator.clipboard.writeText(`[${filename}](${encodeURI(link)})`);
-  };
-
-  const add = () => addDraw((name) => {
-    setFiles([...files, name]);
-  });
-
-  const rename = (fileName) => {
-    renameDraw(fileName, (name) => {
-      files.splice(files.findIndex((v) => v===fileName), 1, name);
-      setFiles([...files]);
+    const copyDraw = (filename) => {
+      const pluginName = "siyuan-plugin-excalidraw";
+      const tabType = "excalidraw";
+      const link = `siyuan://plugins/${pluginName}${tabType}?icon=iconExcalidraw&title=${filename}&data=${JSON.stringify(
+        { name: filename }
+      )}`;
+      navigator.clipboard.writeText(`[${filename}](${encodeURI(link)})`);
+    };
+  
+    const add = () => addDraw((name) => {
+      setFiles([...files, name]);
     });
+  
+    const rename = (fileName) => {
+      renameDraw(fileName, (name) => {
+        files.splice(files.findIndex((v) => v===fileName), 1, name);
+        setFiles([...files]);
+      });
   };
 
   const handleOpen = (file) => {
@@ -39,10 +39,7 @@ export const Dock = (props) => {
 
   const handleDelete = (file, event) => {
     event.stopPropagation();
-    //"⚠ Warning: Excalidraw", `Are you sure you want to delete ${file}?`
-    //this.i18n.
-    //confirm("⚠️", this.i18n.confirmRemove.replace("${name}", this.name), () => {
-    confirm("⚠警告: Excalidraw", `确认删除${file}吗?`, () => {
+    confirm("⚠", this.i18n.warningplugin, this.i18n.confirmRemove.replace("${file}", this.file), () => {
       deleteDraw(file);
       files.splice(
         files.findIndex((i) => i === file),
@@ -75,7 +72,7 @@ export const Dock = (props) => {
         <span
           data-type="min"
           className="block__icon b3-tooltips b3-tooltips__sw"
-          aria-label="最小化" //minimize
+          aria-label={this.i18n.minimize}
         >
           <svg>
             <use xlinkHref="#iconMin"></use>
@@ -84,7 +81,7 @@ export const Dock = (props) => {
         <span
           id="add-draw"
           className="block__icon b3-tooltips b3-tooltips__sw"
-          aria-label="新建" //new build
+          aria-label={this.i18n.newBuild}
           onClick={() => add()}
         >
           <svg>
@@ -94,22 +91,22 @@ export const Dock = (props) => {
         <span
           id="refresh"
           className="block__icon b3-tooltips b3-tooltips__sw"
-          aria-label="刷新" //refresh
-          onClick={() => handleRefresh()}
+          aria-label={this.i18n.refresh}
+        onClick={() => handleRefresh()}
         >
-          <svg>
-            <use xlinkHref="#iconRefresh"></use>
-          </svg>
-        </span>
-      </div>
-      <div className="fn__flex-1 plugin-excalidraw-dock">
+        <svg>
+          <use xlinkHref="#iconRefresh"></use>
+        </svg>
+      </span>
+    </div>
+    <div className="fn__flex-1 plugin-excalidraw-dock">
         {files?.map((file) => {
           return (
             <div key={file} className="excalidraw-draw" data-name={file}>
               <span onClick={() => handleOpen(file)}>{file}</span>
               <span
                 className="fileicon editfile b3-tooltips b3-tooltips__s"
-                aria-label="修改" //modify
+                aria-label={this.i18n.edit}
                 data-name={file}
                 onClick={(e) => handleEdit(file, e)}
               >
@@ -119,7 +116,7 @@ export const Dock = (props) => {
               </span>
               <span
                 className="fileicon copyfile b3-tooltips b3-tooltips__s"
-                aria-label="复制链接" //copy Link
+                aria-label={this.i18n.copyLink}
                 data-name={file}
                 onClick={(e) => handleCopy(file, e)}
               >
@@ -129,7 +126,7 @@ export const Dock = (props) => {
               </span>
               <span
                 className="fileicon deletefile b3-tooltips b3-tooltips__s"
-                aria-label="删除" //delete
+                aria-label={this.i18n.delete}
                 data-name={file}
                 onClick={(e) => handleDelete(file, e)}
               >
@@ -139,7 +136,7 @@ export const Dock = (props) => {
               </span>
             </div>
           );
-        }) || <div style={{ margin: "0 12px" }}>无数据</div>} //no data
+        }) || <div style={{ margin: "0 12px" }}>{this.i18n.noData}</div>}
       </div>
     </div>
   );
@@ -148,3 +145,4 @@ export const Dock = (props) => {
 Dock.propTypes = {
   plugin: PropTypes.object.isRequired,
 };
+

@@ -1,13 +1,17 @@
 {
-  "addTopBarIcon": "使用插件添加一个顶栏按钮",
-  "cancel": "取消",
-  "save": "保存",
-  "byeMenu": "再见，菜单！",
-  "helloPlugin": "你好，插件！",
-  "byePlugin": "再见，插件！",
-  "showDialog": "弹出一个对话框",
-  "removedData": "数据已删除",
-  "confirmRemove": "确认删除${file}吗?",
-  "warningplugin": "警告: Excalidraw",
-  "insertEmoji": "插入表情"
+  "confirmRemove": "确定要删除'${file}'吗？",
+  "edit": "修改",
+  "copyLink": "复制链接",
+  "delete": "删除",
+  "noData": "无数据",
+  "minimize": "最小化",
+  "newBuild": "新建",
+  "refresh": "刷新",
+  "invalidNameMessage": "Excalidraw: 名称 ${name} 不合法",
+  "nameLabel": "名称",
+  "nameDescription": "名称为文件名，不可包含/,*,$等特殊字符",
+  "saveButton": "保存",
+  "fullscreen": "全屏",
+  "createDialogTitle": "创建Excalidraw",
+  "renameDialogTitle": "重命名Excalidraw"
 }

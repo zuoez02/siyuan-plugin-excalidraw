@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { addDraw, renameDraw } from "../services/data";
 
 const InvalidPathChar = [
@@ -19,11 +19,11 @@ const InvalidPathChar = [
 
 export const DialogContent = (props) => {
   const [name, setName] = useState(props.oldName);
+
   const save = (name) => {
     const result = name.trim();
     if (!result || InvalidPathChar.some((v) => result.indexOf(v) !== -1)) {
-      //The name ${name} is invalid`
-      this.siyuan.showMessage(`Excalidraw: 名称 ${name} 不合法`);
+      this.siyuan.showMessage(this.i18n.invalidNameMessage.replace("${name}", this.name));
       return;
     }
     if (props.type === "create") {
@@ -44,12 +44,8 @@ export const DialogContent = (props) => {
     <div id="create-excalidraw">
       <label className="fn__flex b3-label config__item">
         <div className="fn__flex-1">
-          //name
-          名称
-          <div className="b3-label__text">
-            //The name is the file name and cannot contain special characters such as /,*,$
-            名称为文件名，不可包含/,*,$等特殊字符
-          </div>
+        {this.i18n.nameLabel}
+          <div className="b3-label__text">{this.i18n.nameDescription}</div>
         </div>
         <span className="fn__space"></span>
         <input
@@ -60,10 +56,9 @@ export const DialogContent = (props) => {
           onKeyUp={(e) => handleKeyUp(e)}
         />
       </label>
-      <div className="button-group" style={{float: 'right', margin: '20px 0 10px'}}>
+      <div className="button-group" style={{ float: "right", margin: "20px 0 10px" }}>
         <button id="saveDraw" className="b3-button" onClick={() => save(name)}>
-         //save
-          保存
+        {this.i18n.saveButton}
         </button>
       </div>
     </div>

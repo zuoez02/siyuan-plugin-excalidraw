@@ -15,17 +15,17 @@ export const Tab = (props) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const excalidrawRef = useRef(null);
 
-  function toggleFullscreen() {
-    const el = props.el.querySelector(".excalidraw-wrapper");
-    if (!el) {
-      return;
-    }
-    if (!isFullScreen) {
-      el.requestFullscreen && el.requestFullscreen();
-    } else {
-      document.exitFullscreen && document.exitFullscreen();
-    }
-
+    function toggleFullscreen() {
+      const el = props.el.querySelector(".excalidraw-wrapper");
+      if (!el) {
+        return;
+      }
+      if (!isFullScreen) {
+        el.requestFullscreen && el.requestFullscreen();
+      } else {
+        document.exitFullscreen && document.exitFullscreen();
+      }
+      
     setIsFullScreen(!isFullScreen);
   }
 
@@ -98,17 +98,17 @@ export const Tab = (props) => {
             <MainMenu.DefaultItems.ToggleTheme />
             <MainMenu.DefaultItems.ClearCanvas />
             <MainMenu.DefaultItems.Help />
-            <MainMenu.Item
-              key="refresh"
+            <MainMenu.Item 
+              key="refresh" 
               onSelect={() => window.location.reload(true)}
             >
-              刷新
+              {this.i18n.refresh}
             </MainMenu.Item>
-            <MainMenu.Item
-              key="fullscreen"
+            <MainMenu.Item 
+              key="fullscreen" 
               onSelect={() => toggleFullscreen()}
             >
-              全屏
+              {this.i18n.fullscreen}
             </MainMenu.Item>
             <MainMenu.DefaultItems.ChangeCanvasBackground />
           </MainMenu>

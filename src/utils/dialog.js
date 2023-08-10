@@ -5,8 +5,7 @@ import { DialogContent } from '../components/dialog-content';
 
 export const addDraw = (callback) => {
   const d = new Dialog({
-    //Create Excalidraw
-    title: "创建Excalidraw",
+    title: this.i18n.createDialogTitle,
     content: `<div class="b3-dialog__content"><div id="create-excalidraw"></div></div>`,
     width: "520px",
   });
@@ -27,24 +26,23 @@ export const addDraw = (callback) => {
 };
 
 export const renameDraw = (name, callback) => {
-    const d = new Dialog({
-      //Rename Excalidraw
-      title: "重命名Excalidraw",
-      content: `<div class="b3-dialog__content"><div id="rename-excalidraw"></div></div>`,
-      width: "520px",
-    });
-    let root;
-    const props = {
-      type: 'rename',
-      oldName: name,
-      onSave: (newName) => {
-          root.unmount();
-          d.destroy();
-          callback(newName);
-      }
+  const d = new Dialog({
+    title: this.i18n.renameDialogTitle,
+    content: `<div class="b3-dialog__content"><div id="rename-excalidraw"></div></div>`,
+    width: "520px",
+  });
+  let root;
+  const props = {
+    type: 'rename',
+    oldName: name,
+    onSave: (newName) => {
+        root.unmount();
+        d.destroy();
+        callback(newName);
     }
-    root = ReactDOM.createRoot(
-      document.querySelector("#rename-excalidraw")
-    );
-    root.render(React.createElement(DialogContent, props));
-  };
+  }
+  root = ReactDOM.createRoot(
+    document.querySelector("#rename-excalidraw")
+  );
+  root.render(React.createElement(DialogContent, props));
+};
