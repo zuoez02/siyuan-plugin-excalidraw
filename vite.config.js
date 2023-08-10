@@ -30,7 +30,7 @@ export default defineConfig({
             },
             external: ['siyuan'],
         },
-        //构建后是否生成 source map 文件
+        //Whether to generate a source map file after building
         sourcemap: false,
     },
 })
